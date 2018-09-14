@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-# require 'haj'
+require 'haj'
 
 require 'faker'
 require 'benchmark/ips'
@@ -16,7 +16,8 @@ Jdbc::Postgres.load_driver
 redis = Redis.new(host: 'redis')
 redis.flushall
 
-pool = JedisRb::Pool.new(host: 'redis')
+jedis = JedisRb::Pool.new(host: 'redis')
+haj = HAJ::Client.new(host: 'redis')
 
 conn = Sequel.connect('jdbc:postgresql://pg/hajrb', user: 'hajrb', password: 'hajrb')
 
@@ -48,16 +49,25 @@ Benchmark.ips do |x|
       conn.fetch("select v from things where k='#{random_keys[i]}'")
     end
   end
+
   x.report('Redis') do
     n.times do |i|
       redis.get(random_keys[i])
     end
   end
+
   x.report('Jedis') do
     n.times do |i|
-      pool.execute(:get, random_keys[i].to_s)
+      jedis.execute(:get, random_keys[i].to_s)
     end
   end
+
+  x.report('HAJ') do
+    n.times do |i|
+      haj.get random_keys[i].to_s
+    end
+  end
+
   x.report('Ruby hash') do
     n.times do |i|
       memory[random_keys[i]]
