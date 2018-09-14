@@ -2,11 +2,20 @@ version: '3'
 
 services:
 
+  # Required for manual testing against a real Redis process.
   redis:
     image: "redis:3.2"
     command: redis-server --appendonly yes
+
+  # The project was started due to the high performance of the
+  # Sequel + jdbc-postgres combo when compared with the performance
+  # of the existing Redis libraries on JRuby.
+  pg:
+    image: "postgres:9.6.10"
+    env_file: .env
 
   gem:
     build: .
     links:
       - "redis:redis"
+      - "pg:pg"

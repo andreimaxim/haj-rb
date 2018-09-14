@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'haj'
+
+require 'faker'
+require 'benchmark/ips'
+require 'sequel'
+require 'jdbc/postgres'
+require 'redis'
+require 'jedis_rb'
+
+
+Jdbc::Postgres.load_driver
+
+redis = Redis.new(host: 'redis')
+redis.flushall
+
+pool = JedisRb::Pool.new(host: 'redis')
+
+conn = Sequel.connect('jdbc:postgresql://pg/hajrb', user: 'hajrb', password: 'hajrb')
+
+conn.run <<-SQL
+  CREATE TABLE IF NOT EXISTS things (
+    k text,
+    v text,
+    PRIMARY KEY (k)
+  );
+  TRUNCATE TABLE things;
+SQL
+
+memory = {}
+
+(1..1000).each do |k|
+  v = Faker::Lorem.paragraph(rand 1..10)
+  conn.run("insert into things (k, v) values ('#{k}', '#{v}')")
+  redis.set(k, v)
+  memory[k]=v
+end
+
+n = 100_000
+random_keys = []
+n.times { random_keys << rand(1..1000) }
+
+Benchmark.ips do |x|
+  x.report('Postgres') do
+    n.times do |i|
+      conn.fetch("select v from things where k='#{random_keys[i]}'")
+    end
+  end
+  x.report('Redis') do
+    n.times do |i|
+      redis.get(random_keys[i])
+    end
+  end
+  x.report('Jedis') do
+    n.times do |i|
+      pool.execute(:get, random_keys[i].to_s)
+    end
+  end
+  x.report('Ruby hash') do
+    n.times do |i|
+      memory[random_keys[i]]
+    end
+  end
+end
+

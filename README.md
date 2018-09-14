@@ -4,13 +4,16 @@ The raison d'être of this project can be pretty much described in one single
 table:
 
 ```bash
-# After 1M rows
- 
-                    user     system      total        real
-Postgres        5.470000   0.020000   5.490000 (  5.304850)
-Redis         280.990000  18.510000 299.500000 (298.341402)
-JedisRb        14.840000  15.130000  29.970000 ( 56.725179)
-Memory          0.270000   0.010000   0.280000 (  0.162491)
+Warming up --------------------------------------
+            Postgres     1.000  i/100ms
+               Redis     1.000  i/100ms
+               Jedis     1.000  i/100ms
+           Ruby hash     5.000  i/100ms
+Calculating -------------------------------------
+            Postgres      2.289  (± 0.0%) i/s -     12.000  in   5.248779s
+               Redis      0.016  (± 0.0%) i/s -      1.000  in  60.470617s
+               Jedis      0.047  (± 0.0%) i/s -      1.000  in  21.109477s
+           Ruby hash     52.735  (±13.3%) i/s -    260.000  in   5.042344s
 ```
 
 It looks slightly odd, but let's explain it a bit.
@@ -20,7 +23,7 @@ machine using JRuby 9.2.0.0 and several libraries:
 
 * [Sequel][sequel] with [jdbc-postgres][jdbc-pg] for the `Postgres` row
 * Plain [redis-rb][redis-rb] for the `Redis` row
-* For the `JedisRb` row the [jedis_rb][jedis_rb] gem was used, which is a simple wrapper over the [jedis][jedis] Java library
+* For the `Jedis` row the [jedis_rb][jedis_rb] gem was used, which is a simple wrapper over the [jedis][jedis] Java library
 * Finally, `Memory` meant using a plain Ruby hash
 
 [sequel]: https://github.com/jeremyevans/sequel/
