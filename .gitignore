@@ -1,7 +1,9 @@
 /.bundle/
+/.env
 /.yardoc
 /_yardoc/
 /coverage/
+/data/redis/*
 /docker-compose.override.yml
 /doc/
 /Gemfile.lock
