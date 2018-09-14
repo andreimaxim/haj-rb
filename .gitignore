@@ -1,5 +1,6 @@
 /.bundle/
 /.env
+/.mvn/
 /.yardoc
 /_yardoc/
 /coverage/

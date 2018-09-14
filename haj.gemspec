@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'haj/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'haj-rb'
+  spec.name          = 'haj'
   spec.version       = HAJ::VERSION
   spec.authors       = ['Andrei Maxim']
   spec.email         = ['andrei@andreimaxim.ro']
@@ -26,15 +26,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
-
+  spec.add_development_dependency 'jar-dependencies', '~> 0.3'
   spec.add_development_dependency 'pry', '~> 0.11'
-  
-  # A bunch of gems required for benchmarking, so we're sure we're on the right
-  # track and actually providing a performance gain.
-  spec.add_development_dependency 'benchmark-ips', '~> 2.7'
-  spec.add_development_dependency 'faker'
-  spec.add_development_dependency 'sequel', '~> 5.12'
-  spec.add_development_dependency 'jdbc-postgres', '~> 42.1'
-  spec.add_development_dependency 'redis', '~> 4.0'
-  spec.add_development_dependency 'jedis_rb', '~> 2.7'
+
+  # The Jedis JAR
+  spec.requirements << "jar redis.clients:jedis, '~> 2.9.0'"
 end
