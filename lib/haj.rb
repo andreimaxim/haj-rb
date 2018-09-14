@@ -8,8 +8,8 @@ require 'haj/version'
 
 # Application files
 require 'haj/client'
-require 'haj/pool'
-require 'haj/pool_config'
+require 'haj/pool/generic'
+require 'haj/pool/config'
 
 module HAJ
   # Make the Jedis Java classes a bit more accessible.
