@@ -1,5 +1,10 @@
 # Highly-Advanced Jedis client for Ruby
 
+[![Gem Version](https://badge.fury.io/rb/haj.svg)](https://badge.fury.io/rb/haj)
+[![Build Status](https://travis-ci.org/andreimaxim/haj-rb.svg?branch=master)](https://travis-ci.org/andreimaxim/haj-rb)
+[![Maintainability](https://api.codeclimate.com/v1/badges/40b89512493cb5356076/maintainability)](https://codeclimate.com/github/andreimaxim/haj-rb/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/40b89512493cb5356076/test_coverage)](https://codeclimate.com/github/andreimaxim/haj-rb/test_coverage)
+
 The raison d'être of this project can be pretty much described in one single
 table:
 

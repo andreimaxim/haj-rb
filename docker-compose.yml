@@ -12,7 +12,6 @@ services:
   # of the existing Redis libraries on JRuby.
   pg:
     image: "postgres:9.6.10"
-    env_file: .env
 
   gem:
     build: .
