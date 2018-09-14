@@ -1,3 +1,3 @@
 module HAJ
-    VERSION = '0.0.1'.freeze
+    VERSION = '0.0.2'.freeze
 end
